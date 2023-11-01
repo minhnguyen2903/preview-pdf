@@ -1,0 +1,50 @@
+* {
+  margin: 0;
+  padding: 0;
+  font-size: 16px;
+  font-family: monospace;
+}
+
+body {
+  background: gray;
+}
+
+#pdf-viewer {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  margin: 0 auto;
+  justify-content: center;
+  align-items: center;
+  padding: 1em;
+}
+#pdf-viewer section {
+  position: relative;
+}
+
+canvas {
+  position: relative;
+}
+
+#highlight-trunk {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+
+#list-word {
+  position: fixed;
+  top: 50vh;
+  left: 40px;
+  width: 300px;
+  background: rgb(243, 243, 243);
+  flex-wrap: wrap;
+  padding: 8px;
+  z-index: 99;
+  border-radius: 4px;
+}
+
+#list-word span {
+  padding: 2px 4px;
+  border-radius: 4px;
+}
