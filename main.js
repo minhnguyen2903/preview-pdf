@@ -6,8 +6,7 @@ const initialScrollTop = localStorage.getItem("scrollTop" || 0);
 const html = document.querySelector("html");
 
 // Set the worker source (adjust the path as needed)
-pdfjsLib.GlobalWorkerOptions.workerSrc =
-  "./node_modules/pdfjs-dist/build/pdf.worker.min.js";
+pdfjsLib.GlobalWorkerOptions.workerSrc = "./pdf.worker.min.js";
 
 const highlightWords = JSON.parse(
   localStorage.getItem("highlightWords") || "[]"
