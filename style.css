@@ -37,7 +37,7 @@ canvas {
   top: 50vh;
   left: 40px;
   width: 300px;
-  background: rgb(243, 243, 243);
+  background: rgb(0, 0, 0);
   flex-wrap: wrap;
   padding: 8px;
   z-index: 99;

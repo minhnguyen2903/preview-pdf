@@ -110,7 +110,7 @@ const _highlightText = async () => {
               .split(" ")
               .map((text) => {
                 if (text.toLowerCase() === word.value.toLowerCase()) {
-                  return `<span style="font:inherit; letter-spacing: inherit;background: ${word.color}22;">${word.value}</span>`;
+                  return `<span style="font:inherit; letter-spacing: inherit;background: ${word.color}44;">${word.value}</span>`;
                 }
                 return text;
               })
@@ -126,64 +126,62 @@ const _highlightText = async () => {
   console.timeEnd("highlight");
 };
 
-if (!pdfViewer.childNodes.length) {
-  pdfjsLib.getDocument(pdfUrl).promise.then((pdfDoc) => {
-    const numPages = 20 || pdfDoc.numPages;
+pdfjsLib.getDocument(pdfUrl).promise.then((pdfDoc) => {
+  const numPages = 40 || pdfDoc.numPages;
 
-    for (let pageNum = 1; pageNum <= numPages; pageNum++) {
-      pdfDoc.getPage(pageNum).then((pdfPage) => {
-        const canvas = document.createElement("canvas");
-        const pageSection = document.createElement("section");
-        pageSection.appendChild(canvas);
+  for (let pageNum = 1; pageNum <= numPages; pageNum++) {
+    pdfDoc.getPage(pageNum).then((pdfPage) => {
+      const canvas = document.createElement("canvas");
+      const pageSection = document.createElement("section");
+      pageSection.appendChild(canvas);
 
-        const context = canvas.getContext("2d");
-        const viewport = pdfPage.getViewport({ scale: 2 });
+      const context = canvas.getContext("2d");
+      const viewport = pdfPage.getViewport({ scale: 2 });
 
-        canvas.width = viewport.width;
-        canvas.height = viewport.height;
-        pdfPage.getTextContent().then((textContent) => {
-          const fontFamilyMap = new Map();
-          Object.keys(textContent.styles).forEach((key) => {
-            fontFamilyMap.set(key, textContent.styles[key]);
-          });
-          for (let i = 0; i < textContent.items.length; i++) {
-            const textItem = textContent.items[i];
-
-            const text = textItem.str;
-            const textRect = textItem.transform;
-            if (text) {
-              const styles = fontFamilyMap.get(textItem.fontName);
-              highlightText({
-                rect: textRect,
-                width: textItem.width,
-                height: textItem.height,
-                container: pageSection,
-                text,
-                styles,
-              });
-            }
-          }
-          mapHighlightWords.forEach((word) => {
-            if (
-              JSON.stringify(textContent.items)
-                .toLowerCase()
-                .includes(word.value.toLowerCase())
-            ) {
-              _highlightText();
-            }
-          });
+      canvas.width = viewport.width;
+      canvas.height = viewport.height;
+      pdfPage.getTextContent().then((textContent) => {
+        const fontFamilyMap = new Map();
+        Object.keys(textContent.styles).forEach((key) => {
+          fontFamilyMap.set(key, textContent.styles[key]);
         });
-        pdfViewer.appendChild(pageSection);
+        for (let i = 0; i < textContent.items.length; i++) {
+          const textItem = textContent.items[i];
 
-        pdfPage
-          .render({ canvasContext: context, viewport: viewport })
-          .promise.then(() => {
-            html.scrollTo(0, Number(initialScrollTop));
-          });
+          const text = textItem.str;
+          const textRect = textItem.transform;
+          if (text) {
+            const styles = fontFamilyMap.get(textItem.fontName);
+            highlightText({
+              rect: textRect,
+              width: textItem.width,
+              height: textItem.height,
+              container: pageSection,
+              text,
+              styles,
+            });
+          }
+        }
+        mapHighlightWords.forEach((word) => {
+          if (
+            JSON.stringify(textContent.items)
+              .toLowerCase()
+              .includes(word.value.toLowerCase())
+          ) {
+            _highlightText();
+          }
+        });
       });
-    }
-  });
-}
+      pdfViewer.appendChild(pageSection);
+
+      pdfPage
+        .render({ canvasContext: context, viewport: viewport })
+        .promise.then(() => {
+          html.scrollTo(0, Number(initialScrollTop));
+        });
+    });
+  }
+});
 
 function highlightText({ rect, width, height, container, text, styles }) {
   const div = document.createElement("div");
