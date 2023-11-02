@@ -135,7 +135,7 @@ pdfjsLib.getDocument(pdfUrl).promise.then((pdfDoc) => {
       pageSection.appendChild(canvas);
 
       const context = canvas.getContext("2d");
-      const viewport = pdfPage.getViewport({ scale: 2 });
+      const viewport = pdfPage.getViewport({ scale: 1 });
 
       canvas.width = viewport.width;
       canvas.height = viewport.height;
@@ -187,11 +187,11 @@ function highlightText({ rect, width, height, container, text, styles }) {
   div.style.position = "absolute";
   div.style.background = "transparent"; // Highlight color
   div.style.opacity = "1"; // Highlight opacity
-  div.style.left = `${rect[4] * 2}px`; // X-coordinate
-  div.style.bottom = `${rect[5] * 2 + styles.ascent}px`; // Y-coordinate
-  div.style.width = width * 2 + "px"; // Width
+  div.style.left = `${rect[4]}px`; // X-coordinate
+  div.style.bottom = `${rect[5] + styles.ascent}px`; // Y-coordinate
+  div.style.width = width + "px"; // Width
   // div.style.height = `${height * 2}px`; // Height
-  div.style.fontSize = height * 2 - 1 + "px";
+  div.style.fontSize = height - 1 + "px";
   div.style.display = "flex";
   div.style.background = "white";
   div.innerHTML = `<span style="font:inherit; color:black; letter-spacing:${
